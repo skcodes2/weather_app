@@ -1,40 +1,39 @@
 
 
+import { stat } from 'fs';
 import { fetchWeatherApi } from 'openmeteo';
-
-var countries = require("i18n-iso-countries");
-const cities = require('cities.json');
+const cities = require('../assests/cities.json');
 
 
-const weatherCodeMap = new Map([
-    [0, "Clear sky"],
-    [1, "Mainly clear"],
-    [2, "Mainly clear"],
-    [3, "Mainly clear"],
-    [45, "Foggy"],
-    [48, "Foggy"],
-    [51, "Light Drizzle"],
-    [53, "Moderate Drizzle"],
-    [55, "Dense Drizzle"],
-    [56, "Freezing Drizzle"],
-    [57, "Freezing Drizzle"],
-    [61, "Rainy"],
-    [63, "Rainy"],
-    [65, "Heavy Rain"],
-    [66, "Freezing Rain"],
-    [67, "Freezing Rain"],
-    [71, "Snow fall"],
-    [73, "Snow fall"],
-    [75, "Heavy Snow fall"],
-    [77, "Snow grains"],
-    [80, "Rain showers"],
-    [81, "Rain showers"],
-    [82, "Heavy Rain"],
-    [85, "Snow showers"],
-    [86, "Heavy Snow showers"],
-    [95, "Thunderstorm"],
-    [96, "Thunderstorm with slight hail"],
-    [99, "Thunderstorm with heavy hail"]
+export const weatherCodeMap = new Map([
+    [0, "Clear sky,clear_day.png,clear_night.png,sun.png,moon.png"],
+    [1, "Mainly clear,clear_day.png,clear_night.png,sun.png,moon.png"],
+    [2, "Mainly clear,clear_day.png,clear_night.png,sun.png,moon.png"],
+    [3, "Cloudy,cloudy_day.png,cloudy_night.png,cloudy.png"],
+    [45, "Foggy,foggy.png,cloudy.png"],
+    [48, "Foggy,foggy.png,cloudy.png"],
+    [51, "Light Drizzle,rain_Any.png,rain.png"],
+    [53, "Moderate Drizzle,rain_Any.png,rain.png"],
+    [55, "Dense Drizzle,rain_Any.png,rain.png"],
+    [56, "Freezing Drizzle,rain_Any.png,rain.png"],
+    [57, "Freezing Drizzle,rain_Any.png,rain.png"],
+    [61, "Rainy,rain_Any.png,rain.png"],
+    [63, "Rainy,rain_Any.png,rain.png"],
+    [65, "Heavy Rain,rain_Any.png,rain.png"],
+    [66, "Freezing Rain,rain_Any.png,rain.png"],
+    [67, "Freezing Rain,rain_Any.png,rain.png"],
+    [71, "Snow fall,snow_Any.png,snowfall.png"],
+    [73, "Snow fall,snow_Any.png,snowfall.png"],
+    [75, "Heavy Snow fall,snow_Any.png,snowfall.png"],
+    [77, "Snow grains,snow_Any.png,snowfall.png"],
+    [80, "Rain showers,rain_Any.png,rain.png"],
+    [81, "Rain showers,rain_Any.png,rain.png"],
+    [82, "Heavy Rain,rain_Any.png,rain.png"],
+    [85, "Snow showers,snow_Any.png,snowfall.png"],
+    [86, "Heavy Snow showers,snow_Any.png,snowfall.png"],
+    [95, "Thunderstorm,thunderStorm_Any.png,storm.png"],
+    [96, "Thunderstorm with slight hail,thunderStorm_Any.png,storm.png"],
+    [99, "Thunderstorm with heavy hail,thunderStorm_Any.png,storm.png"]
 ]);
 
 type Location = {
@@ -44,7 +43,9 @@ type Location = {
     country: string;
     admin1: string;
     admin2: string;
+    state: string;
 }
+
 
 type CitiesProp = Location[];
 
@@ -54,11 +55,9 @@ type Coords = {
 }
 
 
-// name = cityName State Country
-//assume inputted city exists
 export function getCoordinates(loco: string, country: string, state: string): Coords {
+    let [city]: CitiesProp = cities.filter((city: Location) => (city.name.toLowerCase() === loco.toLowerCase()) && (city.country.toLowerCase() === country.toLowerCase()) && state === city.state);
 
-    let [city]: CitiesProp = cities.filter((city: Location) => (city.name.toLowerCase() == loco.toLowerCase()) && (city.country.toLowerCase() === country.toLowerCase()) && state === city.admin1);
     return {
         lat: parseFloat(city.lat),
         long: parseFloat(city.lng)
