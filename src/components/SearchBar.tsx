@@ -1,5 +1,8 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import SearchItem from './SearchItem';
+import { changeBackgroundColor } from '../Helpers/StylingHelpers';
+import { useCurrentCity } from '../Helpers/CurrentCityContext';
+import "../styles/components/SearchBar.css"
 const cities = require("../assests/cities.json")
 
 
@@ -14,21 +17,35 @@ type Location = {
 };
 
 export default function SearchBar() {
-    const [searchInput, setSearchInput] = useState("")
+    
     const [searchResult, setSearchResult] = useState<Location[] | undefined>([])
+    const {currentCity, searchInput, setSearchInput} = useCurrentCity()
+    
 
-    function search(searchValue: string, event: any) {
+    const maxNumberOfSearchResults = 10;
+    if(searchInput!==""){
+        changeBackgroundColor("black")
+    }
+
+    useEffect(()=>{
+        search("")
+    }, [currentCity])
+    
+
+    function search(searchValue: string) {
+        
         if (searchValue === "") {
             setSearchResult([])
+            changeBackgroundColor("transparent")
             setSearchInput("")
             return
         }
-
+        
         setSearchInput(searchValue)
         let result: Location[] = cities.filter((city: Location) => city.name.toLowerCase().startsWith(searchValue.toLowerCase()))
 
         if (result.length > 7) {
-            setSearchResult(result.slice(0, 10))
+            setSearchResult(result.slice(0, maxNumberOfSearchResults))
         }
         else {
             setSearchResult(result)
@@ -36,42 +53,44 @@ export default function SearchBar() {
     }
 
     return (
+        <div>
         <div className='searchBar-container' >
-
-            <div style={{ position: 'relative', display: 'inline-block' }}>
+                
                 <i className="fas fa-search" style={{
                     position: 'absolute',
                     left: '10px',
+                    fontSize: '2rem',
                     top: '51%',
                     transform: 'translateY(-50%)',
-                    color: 'black',
+                    color: 'white',
+                    zIndex: '100'
 
                 }}>
+
                 </i>
+                
                 <input type='text'
                     value={searchInput}
                     placeholder='Search For A City'
-                    className='searchBar-input'
+                    className='input'
                     maxLength={25}
-                    onChange={(e) => search(e.target.value, e)}
-                    style={{ paddingLeft: '30px', borderRadius: "10px", backgroundColor: "#1E2532", opacity: 0.5, color: "white", border: "2px solid #1E2532" }}
+                    onChange={(e) => search(e.target.value)}
+                    
                 />
 
-
-            </div>
-
-            <div>
-                {searchResult && searchResult.map((city: Location) => (
-                    <SearchItem
-
-                        city={city.name}
-                        country={city.country}
-                        state={city.state}
-                    />
-                ))}
-            </div>
-
         </div>
+        <div className='searchItems'>
+        {searchResult && searchResult.map((city: Location) => (
+            
+            <SearchItem
+
+                city={city.name}
+                country={city.country}
+                state={city.state}
+            />
+        ))}
+    </div>
+    </div>
     )
 }
 

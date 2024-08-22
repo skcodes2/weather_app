@@ -1,8 +1,8 @@
 
-
-import { stat } from 'fs';
 import { fetchWeatherApi } from 'openmeteo';
+import { WeatherData } from '../components/SearchItem';
 const cities = require('../assests/cities.json');
+
 
 
 export const weatherCodeMap = new Map([
@@ -64,13 +64,13 @@ export function getCoordinates(loco: string, country: string, state: string): Co
     }
 }
 
-export async function getWeatherData(lat: Number, long: Number) {
+export async function getWeatherData(lat: Number, long: Number):Promise<WeatherData> {
 
     const params = {
         "latitude": lat,
         "longitude": long,
         "current": ["temperature_2m", "relative_humidity_2m", "apparent_temperature", "is_day", "precipitation", "rain", "showers", "snowfall", "weather_code", "cloud_cover", "pressure_msl", "wind_speed_10m", "wind_direction_10m"],
-        "hourly": ["temperature_2m", "relative_humidity_2m", "precipitation_probability", "precipitation", "rain", "showers", "snowfall", "weather_code", "pressure_msl", "cloud_cover", "visibility", "wind_speed_10m", "wind_direction_10m"],
+        "hourly": ["temperature_2m", "dew_point_2m", "relative_humidity_2m", "precipitation_probability", "precipitation", "rain", "showers", "snowfall", "weather_code", "pressure_msl", "cloud_cover", "visibility", "wind_speed_10m", "wind_direction_10m"],
         "daily": ["weather_code", "temperature_2m_max", "temperature_2m_min", "apparent_temperature_max", "apparent_temperature_min", "sunrise", "sunset", "daylight_duration", "sunshine_duration", "uv_index_max", "precipitation_sum", "rain_sum", "showers_sum", "snowfall_sum", "precipitation_hours", "precipitation_probability_max", "wind_speed_10m_max", "wind_direction_10m_dominant"]
     };
     const url = "https://api.open-meteo.com/v1/forecast";
@@ -92,10 +92,10 @@ export async function getWeatherData(lat: Number, long: Number) {
     const daily = response.daily()!;
 
     // Note: The order of weather variables in the URL query and the indices below need to match!
-    const weatherData = {
+    const weatherData: WeatherData = {
 
         current: {
-            getWeatherType: function () {
+            getWeatherType: function ():string | undefined {
                 return weatherCodeMap.get(current.variables(8)!.value())
             },
             time: new Date((Number(current.time()) + utcOffsetSeconds) * 1000),
@@ -117,10 +117,11 @@ export async function getWeatherData(lat: Number, long: Number) {
             time: range(Number(hourly.time()), Number(hourly.timeEnd()), hourly.interval()).map(
                 (t) => new Date((t + utcOffsetSeconds) * 1000)
             ),
-            getWeatherType: function (code: number) {
+            getWeatherType: function (code: number):string | undefined {
                 return weatherCodeMap.get(code)
             },
             temperature2m: hourly.variables(0)!.valuesArray()!,
+            dewPoint2m: hourly.variables(1)!.valuesArray()!,
             relativeHumidity2m: hourly.variables(1)!.valuesArray()!,
             precipitationProbability: hourly.variables(2)!.valuesArray()!,
             precipitation: hourly.variables(3)!.valuesArray()!,
@@ -138,7 +139,7 @@ export async function getWeatherData(lat: Number, long: Number) {
             time: range(Number(daily.time()), Number(daily.timeEnd()), daily.interval()).map(
                 (t) => new Date((t + utcOffsetSeconds) * 1000)
             ),
-            getWeatherType: function (code: number) {
+            getWeatherType: function (code: number):string | undefined {
                 return weatherCodeMap.get(code)
             },
             weatherCode: daily.variables(0)!.valuesArray()!,
@@ -161,7 +162,7 @@ export async function getWeatherData(lat: Number, long: Number) {
             windDirection10mDominant: daily.variables(17)!.valuesArray()!,
         },
 
-    };
+    }
 
     return weatherData
 }
