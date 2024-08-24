@@ -92,35 +92,35 @@ export function customRound(value:number) {
 export default function Slider( {data, isHourly}: DataProps ) {
 
     const content = isHourly ? (
-        <div>
+        <div className="item-wrapper">
         {data.time.slice(getIndex(data.time),35).map((time: Date, index: number)=> (
         <SwiperSlide key={index}>
-            <div>{armyTo12hTime(time)}</div>
-            <div>
-                <img src={require("../assests/Icons/"+ getImageURL(data.weatherCode[index+getIndex(data.time)] , data.getWeatherType(data.weatherCode[index+getIndex(data.time)]), armyTo12hTime(time)))} alt="" />
+            <div className='time'>{armyTo12hTime(time)}</div>
+            <div className='image-wrapper'>
+                <img className='simage' src={require("../assests/Icons/"+ getImageURL(data.weatherCode[index+getIndex(data.time)] , data.getWeatherType(data.weatherCode[index+getIndex(data.time)]), armyTo12hTime(time)))} alt="" />
             </div>
-            <div>{customRound((data.temperature2m?.[index+getIndex(data.time)] as number ))+" °C"}</div>
+            <div className='stemperature'>{customRound((data.temperature2m?.[index+getIndex(data.time)] as number ))+" °C"}</div>
         </SwiperSlide>
         
     ))}
         
         </div>
       ) : (
-        <div>
+        <div className="item-wrapper">
             {data.time.slice(1).map((time: Date, index: number)=> (
         <SwiperSlide key={index}>
-            <div>{time.toLocaleDateString("en",{ weekday: 'short' })}</div>
-            <div>
-                <img src={require("../assests/Icons/"+ getImageURL(data.weatherCode[index] , data.getWeatherType(data.weatherCode[index])))} alt="" />
+            <div className='time' >{time.toLocaleDateString("en",{ weekday: 'short' })}</div>
+            <div className='image-wrapper'>
+                <img className='simage' src={require("../assests/Icons/"+ getImageURL(data.weatherCode[index] , data.getWeatherType(data.weatherCode[index])))} alt="" />
             </div>
-            <div>{customRound(data.temperature2mMax?.[index] || 0)+" °C"}</div>
+            <div className='stemperature'>{customRound(data.temperature2mMax?.[index] || 0)+" °C"}</div>
         </SwiperSlide>
         ))}
         </div>
       );
 
   return (
-    <div>
+    <div className='slider-wrapper'>
         <Swiper
         slidesPerView={4}
         spaceBetween={20}
@@ -129,7 +129,7 @@ export default function Slider( {data, isHourly}: DataProps ) {
           clickable: true,
         }}
         modules={[FreeMode, Pagination]}
-        className="mySwiper"
+        className="slider"
       >
     {
       content

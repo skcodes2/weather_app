@@ -1,0 +1,91 @@
+@import "../Variables/Variables.scss";
+@import"../Variables/Mixins.scss";
+
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: Source Serif Pro;
+}
+
+#root {
+    background-size: contain;
+    overflow: hidden;
+    background-repeat: no-repeat;
+}
+
+.weather-app-container {
+    padding: 1rem;
+
+}
+
+.searchBar-container {
+    width: 100%;
+    min-height: 3dvh;
+    position: relative;
+    border-radius: 30px;
+    border: 5px solid $borderColor;
+    background-color: $boxColor;
+    opacity: 1;
+    color: $textColor;
+    
+
+
+
+    & .input {
+
+        display: block;
+        border: none;
+        width: 95%;
+        height: 100%;
+        margin: 0 auto;
+        background-color: $boxColor;
+        color: $textColor;
+        font-size: #{$inputFontSize};
+        padding: #{$inputPadding};
+    }
+
+    & .input:focus {
+        outline: none;
+
+    }
+
+}
+
+.searchItems {
+    @include flexColumn(0.1rem);
+    position: absolute;
+    left: -0.00000001%;
+    width: 100dvw;
+    z-index: 100;
+    background-color: black;
+
+
+
+    & .item {
+        display: flex;
+        align-items: center;
+        font-size: 2rem;
+        color: $textColor;
+        height: #{$search-item-height};
+
+        & p {
+            margin-left: 1rem;
+        }
+
+        & p:hover {
+            text-decoration: underline;
+        }
+
+    }
+
+    & .item:nth-child(even) {
+        background-color: #393E4C;
+    }
+
+    & .item:hover {
+        cursor: pointer;
+        font-weight: 600;
+    }
+}

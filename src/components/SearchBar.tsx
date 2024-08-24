@@ -83,7 +83,6 @@ export default function SearchBar() {
         {searchResult && searchResult.map((city: Location) => (
             
             <SearchItem
-
                 city={city.name}
                 country={city.country}
                 state={city.state}

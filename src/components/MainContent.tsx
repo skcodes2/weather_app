@@ -6,6 +6,7 @@ import { useState } from 'react'
 import SearchHistory from './SearchHistory'
 import Slider from './Slider'
 import DataBox from './DataBox'
+import "../styles/components/MainContent.css"
 
 function getImageUrl(current:WeatherData['current'] | undefined){
 
@@ -68,11 +69,17 @@ function getRainProb(hourly : WeatherData['hourly']){
 
 }
 
+function buttonStyle (hourly:boolean){
+  
+}
+
 export default function MainContent() {
 const {currentCity:data, locationName} = useCurrentCity()
 const [minTemp, maxTemp] = getMinMaxTemp(data)
 const [hourly, setHourly] = useState(true)
 const info = data as WeatherData
+
+
 
 
 const sliderDataHourly = {
@@ -99,18 +106,29 @@ const sliderDataDaily= {
 
   return (
 
-    <div>
-      <section className='left-panel'>
-        <img src={require("../assests/Icons/"+ getImageUrl(data?.current))} alt="" />
-        <p>{customRound(data?.current.temperature2m as number) + " °C"}</p>
-        <p>{locationName}</p>
-        <p>{`H: ${customRound(maxTemp as number)} °C L: ${customRound(minTemp as number)} °C`}</p>
-        <button onClick={()=>{setHourly(false)}}>Daily</button>
-        <button onClick={()=> {setHourly(true)}}>Hourly</button>
+    <div className='grid'>
+      <section className='summary'>
+
+        <div className="bg"></div>
+
+        <div className="content">
+          <img className='image' src={require("../assests/Icons/"+ getImageUrl(data?.current))} alt="" />
+          <p className='real-temp'>{customRound(data?.current.temperature2m as number) + " °C"}</p>
+          <p className='name'>{locationName}</p>
+          <p className='apparent-temp'>{`H: ${customRound(maxTemp as number)} °C L: ${customRound(minTemp as number)} °C`}</p>
+          
+       
+        </div>
+
+        <button className='dailyBtn' onClick={(e)=>{setHourly(false); }} style={{transform: "scale(1.2)"}}>Daily</button>
+        <button className='hourlyBtn' onClick={()=> {setHourly(true)}}>Hourly</button>
         <Slider isHourly ={hourly} data={ hourly ?  sliderDataHourly.data : sliderDataDaily.data }></Slider>
+        
+        
+        
       </section>
 
-      <section className='right-panel'>
+      <section className='details'>
         <SearchHistory/>
         <DataBox title="Precipitaion" icon='sun.png' body={customRound(data?.current.precipitation as number) + ' mm in the last hour'} footer={ getRainProb(data?.hourly as WeatherData['hourly'])+"% chance to Rain"}  />
         <DataBox title='Humidity' icon='sun.png' body={data?.current.relativeHumidity2m + " °C"} footer={'The dew point is ' + getDewPoint(data?.hourly as WeatherData['hourly'])+" °C right now"}/>

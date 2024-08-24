@@ -1,0 +1,72 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: Source Serif Pro;
+}
+
+#root {
+  background-size: contain;
+  overflow: hidden;
+  background-repeat: no-repeat;
+}
+
+.weather-app-container {
+  padding: 1rem;
+}
+
+.searchBar-container {
+  width: 100%;
+  min-height: 3dvh;
+  position: relative;
+  border-radius: 30px;
+  border: 5px solid #393E4C;
+  background-color: #1E2532;
+  opacity: 1;
+  color: white;
+}
+.searchBar-container .input {
+  display: block;
+  border: none;
+  width: 95%;
+  height: 100%;
+  margin: 0 auto;
+  background-color: #1E2532;
+  color: white;
+  font-size: 25px;
+  padding: 1.5rem;
+}
+.searchBar-container .input:focus {
+  outline: none;
+}
+
+.searchItems {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  position: absolute;
+  left: -0.00000001%;
+  width: 100dvw;
+  z-index: 100;
+  background-color: black;
+}
+.searchItems .item {
+  display: flex;
+  align-items: center;
+  font-size: 2rem;
+  color: white;
+  height: 2%;
+}
+.searchItems .item p {
+  margin-left: 1rem;
+}
+.searchItems .item p:hover {
+  text-decoration: underline;
+}
+.searchItems .item:nth-child(even) {
+  background-color: #393E4C;
+}
+.searchItems .item:hover {
+  cursor: pointer;
+  font-weight: 600;
+}/*# sourceMappingURL=SearchBar.css.map */
