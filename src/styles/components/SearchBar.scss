@@ -10,9 +10,9 @@
 }
 
 #root {
-    background-size: contain;
-    overflow: hidden;
+    background-size: cover;
     background-repeat: no-repeat;
+
 }
 
 .weather-app-container {
@@ -29,7 +29,7 @@
     background-color: $boxColor;
     opacity: 1;
     color: $textColor;
-    
+
 
 
 
@@ -54,7 +54,7 @@
 }
 
 .searchItems {
-    @include flexColumn(0.1rem);
+    @include flexColumn(0rem);
     position: absolute;
     left: -0.00000001%;
     width: 100dvw;
@@ -68,7 +68,7 @@
         align-items: center;
         font-size: 2rem;
         color: $textColor;
-        height: #{$search-item-height};
+        height: $search-item-height;
 
         & p {
             margin-left: 1rem;

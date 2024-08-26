@@ -1,23 +1,26 @@
-//global styles
+//global variables
 $boxColor: #1E2532;
 $textColor: white;
 $borderColor: #393E4C;
 
-
-
-//Search Bar Specfics
+//Search Bar 
 $inputFontSize: 25px;
-$inputPadding: 1.5rem;
-$search-item-height: 2%;
+$inputPadding: 2rem;
+$search-item-height: 4rem;
 
 
 //slider
-$image-size: 55%;
+$image-size: 100%;
 $text-size: 1.2rem;
 
-
+//right Panel
+$img-size: 11%;
+$title-size: 1.5rem;
+$body-text-size: 3rem;
+$footer-text-size: 1.5rem;
 
 //left Panel
-$real-temp-fontSize:4.5rem;
+$image-width: 45%;
+$real-temp-fontSize: 4.5rem;
 $name-fontSize: 2rem;
 $apparentt-temp-fontSize: 1.5rem;

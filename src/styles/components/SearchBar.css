@@ -6,8 +6,7 @@
 }
 
 #root {
-  background-size: contain;
-  overflow: hidden;
+  background-size: cover;
   background-repeat: no-repeat;
 }
 
@@ -43,7 +42,7 @@
 .searchItems {
   display: flex;
   flex-direction: column;
-  gap: 0.1rem;
+  gap: 0rem;
   position: absolute;
   left: -0.00000001%;
   width: 100dvw;
@@ -55,7 +54,7 @@
   align-items: center;
   font-size: 2rem;
   color: white;
-  height: 2%;
+  height: 4rem;
 }
 .searchItems .item p {
   margin-left: 1rem;

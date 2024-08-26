@@ -5,26 +5,26 @@ type DataBoxProps = {
     title: string
     icon: string
     body?: any
-    footer?: string 
+    footer?: string
 }
 
-export default function DataBox({title, icon, body, footer}: DataBoxProps) {
-  return (
-    <div>
-        <header>
-            <img src={require("../assests/Icons/"+icon)} alt="" />
-            <h1>{title}</h1>
-        </header>
-            
-        <body>
-            {body }
-        </body>
+export default function DataBox({ title, icon, body, footer }: DataBoxProps) {
+    return (
+        <div className='data-box'>
+            <header className='header'>
+                <img className="img" src={require("../assests/Icons/" + icon)} alt="" />
+                <p className='title'>{title}</p>
+            </header>
 
-        <footer>
-            {footer && <p>{footer}</p>}
+            <body className='body'>
+                {body}
+            </body>
 
-        </footer>
-    </div>
-  )
+            <footer className='footer'>
+                {footer && <p className='text'>{footer}</p>}
+
+            </footer>
+        </div>
+    )
 }
 
